@@ -86,6 +86,9 @@ P.S. You can delete this when you're done too. It's your config now! :)
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
+
+require 'lua.custom.keymaps'
+
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -164,6 +167,8 @@ vim.o.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.o.scrolloff = 10
 
+-- which "horizontal" keys are allowed to travel to prev/next line
+vim.o.whichwrap = 'bs<>[]hl'
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
@@ -175,9 +180,6 @@ vim.o.confirm = true
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('n', '<C-s>', '<cmd>write<CR>')
-vim.keymap.set('i', '<C-s>', '<Esc><cmd>write<CR>')
-vim.keymap.set('v', '<C-s>', '<Esc><cmd>write<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -724,6 +726,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'ruff',
+        'jq',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -778,6 +781,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = { 'ruff', 'ruff_format' },
+        json = { 'jq' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
