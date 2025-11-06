@@ -27,5 +27,5 @@ keymap('v', '>', '>gv^')
 keymap('v', 'p', '"_dP')
 
 -- toggle comment like vscode
-keymap('n', '<C-/>', 'gcc', { desc = 'Comment out' })
-keymap('v', '<C-/>', 'gc', { desc = 'Comment out' })
+-- keymap('n', '<C-/>', 'gcc', { desc = 'Comment out' })
+-- keymap('v', '<C-/>', 'gc', { desc = 'Comment out' })
