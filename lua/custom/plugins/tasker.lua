@@ -7,6 +7,7 @@ return {
     tasker.setup { width = 60, target_file = '~/projects/snippets/todo.md' }
 
     vim.keymap.set('n', '<leader>td', '<cmd>Td<cr>', { desc = 'Open Todo' })
+    vim.keymap.set({ 'n', 'v' }, '<leader>tt', '<cmd>Tt<cr>', { desc = 'toggle terminal' })
 
     -- Keymaps
     vim.keymap.set('n', '<leader>ct', tasker.makeTitle, { desc = 'Make Title' })
