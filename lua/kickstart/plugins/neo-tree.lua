@@ -19,6 +19,17 @@ return {
   ---@type neotree.Config
   opts = {
     filesystem = {
+      filtered_items = {
+        visible = false,
+        hide_gitignored = false,
+        hide_dotfiles = false,
+        hide_by_name = {
+          '.git',
+          '.ruff_cache',
+          '.venv',
+          '__pycache__',
+        },
+      },
       window = {
         mappings = {
           ['\\'] = 'close_window',

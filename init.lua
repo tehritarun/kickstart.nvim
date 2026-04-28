@@ -86,12 +86,15 @@ P.S. You can delete this when you're done too. It's your config now! :)
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
+
+require 'custom.keymaps'
+
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -102,7 +105,7 @@ vim.g.have_nerd_font = false
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -138,6 +141,11 @@ vim.o.timeoutlen = 300
 -- Configure how new splits should be opened
 vim.o.splitright = true
 vim.o.splitbelow = true
+
+-- Custom options
+vim.o.tabstop = 2
+vim.o.whichwrap = 'bs<>[]hl'
+vim.o.autoread = true
 
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
@@ -601,8 +609,8 @@ require('lazy').setup({
       ---@type table<string, vim.lsp.Config>
       local servers = {
         -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
+        gopls = {},
+        pylsp = {},
         -- rust_analyzer = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -657,6 +665,7 @@ require('lazy').setup({
       -- You can press `g?` for help in this menu.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
+        'ruff',
         -- You can add other tools here that you want Mason to install
       })
 
@@ -688,8 +697,8 @@ require('lazy').setup({
       format_on_save = function(bufnr)
         -- You can specify filetypes to autoformat on save here:
         local enabled_filetypes = {
-          -- lua = true,
-          -- python = true,
+          lua = true,
+          python = true,
         }
         if enabled_filetypes[vim.bo[bufnr].filetype] then
           return { timeout_ms = 500 }
@@ -704,10 +713,14 @@ require('lazy').setup({
       formatters_by_ft = {
         -- rust = { 'rustfmt' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'ruff', 'ruff_format' },
+        sh = { 'beautysh' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        json = { 'prettierd', 'prettier', stop_after_first = true },
+        html = { 'prettierd', 'prettier', stop_after_first = true },
+        css = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -732,12 +745,10 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
+          },
         },
         opts = {},
       },
@@ -767,7 +778,7 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'enter',
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -782,7 +793,7 @@ require('lazy').setup({
       completion = {
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
       },
 
       sources = {
@@ -948,17 +959,17 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommended keymaps
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommended keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
