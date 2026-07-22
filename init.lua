@@ -121,6 +121,12 @@ do
   -- Don't show the mode, since it's already in the status line
   vim.o.showmode = false
 
+  -- fix tab and indentation
+  vim.o.expandtab = true
+  vim.o.tabstop = 4
+  vim.o.shiftwidth = 4
+  vim.o.softtabstop = 4
+
   -- Sync clipboard between OS and Neovim.
   --  Schedule the setting after `UiEnter` because it can increase startup-time.
   --  Remove this option if you want your OS clipboard to remain independent.
@@ -712,6 +718,7 @@ do
     -- clangd = {},
     gopls = {},
     pylsp = {},
+    bashls = {},
     -- pyright = {},
     -- rust_analyzer = {},
     --
@@ -781,6 +788,8 @@ do
     'prettierd',
     'markdownlint',
     'gofumpt',
+    'shellcheck',
+    'shfmt',
   })
 
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -823,7 +832,7 @@ do
       -- rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
       python = { 'ruff', 'ruff_format' },
-      sh = { 'beautysh' },
+      bash = { 'shfmt' },
       go = { 'gofumpt' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
