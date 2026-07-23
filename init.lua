@@ -468,6 +468,10 @@ do
   ---@diagnostic disable-next-line: duplicate-set-field
   statusline.section_location = function() return '%2l:%-2v' end
 
+  -- - gS - Toggle between inline anrgument and wrapped arguments
+  require('mini.splitjoin').setup()
+
+  vim.keymap.set('n', 'gS', function() require('mini.splitjoin').toggle() end, { desc = 'Toggle split/join' })
   -- ... and there is more!
   --  Check out: https://github.com/nvim-mini/mini.nvim
 end
