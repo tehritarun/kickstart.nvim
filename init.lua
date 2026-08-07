@@ -709,6 +709,7 @@ do
       --
       -- This may be unwanted, since they displace some of your code
       if client and client:supports_method('textDocument/inlayHint', event.buf) then
+        vim.lsp.inlay_hint.enable(true)
         map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
       end
     end,
@@ -720,11 +721,49 @@ do
   ---@type table<string, vim.lsp.Config>
   local servers = {
     -- clangd = {},
-    gopls = {},
-    pylsp = {},
-    bashls = {},
-    -- pyright = {},
     -- rust_analyzer = {},
+    bashls = {},
+    -- for golang
+    gopls = {
+      settings = {
+        gopls = {
+          -- Core Inlay Hint Settings
+          hints = {
+            assignVariableTypes = true, -- Shows types in variable assignments (e.g., i /*int*/)
+            compositeLiteralFields = true, -- Shows field names in structs/slices
+            compositeLiteralTypes = true, -- Shows types in composite literals
+            constantValues = true, -- Shows values for constants/iota
+            functionTypeParameters = true, -- Shows types for generic function parameters
+            parameterNames = true, -- Shows parameter names in function calls
+            rangeVariableTypes = true, -- Shows types in range loops (e.g., for k /*int*/)
+            -- ignoredError = true,            -- (Optional) Shows hints for ignored errors
+          },
+          -- Recommended Performance/UX Settings
+          usePlaceholders = true, -- Improves completion performance
+          staticcheck = true,
+        },
+      },
+    },
+    -- for python files
+    basedpyright = {
+      settings = {
+        basedpyright = {
+          analysis = {
+            typeCheckingMode = 'off', -- Options: "off", "basic", "standard", "strict"
+            autoSearchPaths = true,
+            useLibraryCodeForTypes = true,
+            diagnosticMode = 'workspace', -- Or "workspace" for full project analysis
+            -- Specific Inlay Hint Controls
+            inlayHints = {
+              variableTypes = true, -- Show types on variable assignments
+              functionReturnTypes = true, -- Show return types on functions
+              callArgumentNames = true, -- Show argument names at call sites
+              genericTypes = false, -- Show inferred generic types (default: false)
+            },
+          },
+        },
+      },
+    },
     --
     -- Some languages (like typescript) have entire language plugins that can be useful:
     --    https://github.com/pmizio/typescript-tools.nvim
